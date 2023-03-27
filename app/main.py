@@ -65,20 +65,20 @@ class Org(BaseModel):
     feide: Optional[Feide] = Field(default=None, title='Feide', description='Feide attributes, can be used to link to Feide in the future.')
 
 
-api = FastAPI()
+app = FastAPI()
 
 
-@api.post("/org")
+@app.post("/org")
 def post_org(org: Org) -> JSONResponse:
     json_compatible_item_data = jsonable_encoder(org)
     return JSONResponse(content=json_compatible_item_data)
 
 
-@api.post("/person")
+@app.post("/person")
 def post_person(person: Person) -> JSONResponse:
     json_compatible_item_data = jsonable_encoder(person)
     return JSONResponse(content=json_compatible_item_data)
 
 
 if __name__ == '__main__':
-    uvicorn.run(api, port=8000, host='127.0.0.1')
+    uvicorn.run(app, port=8000, host='127.0.0.1')
