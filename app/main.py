@@ -16,14 +16,18 @@ class Address(BaseModel):
     country: Optional[str] = Field(default='Norway', title='Country', description='Country', example='Norway')
 
 
-class Feide(BaseModel):
-    norEduOrgUniqueIdentifier: Optional[str] = Field(default=None, title='NorEduOrgUniqueIdentifier', description='The number assigned the higher educational institution by Universities and Colleges Admission Service ("Samordna opptak", SO).', example='00000185')
-    norEduOrgUnitUniqueIdentifier: Optional[str] = Field(default=None, title='NorEduOrgUnitUniqueIdentifier', description='The identifier describing an organizational unit.', example='332244')
+class FeidePerson(BaseModel):
     norEduPersonLegalName: Optional[str] = Field(default=None, title='NorEduPersonLegalName', description='The legal name of the person.', example='Ola Jens Normann')
+    eduPersonScopedAffiliation: Optional[list[EmailStr]] = Field(default=None, title='EduPersonScopedAffiliation', description='Specifies the person’s role and home organization or school.', example=['student@trondheim.kommune.no', 'student@no975278921.trondheim.kommune.no'])
     eduPersonPrincipalName: Optional[str] = Field(default=None, title='EduPersonPrincipalName', description='Full Feide-name.', example='olanor123@universitetet.no')
     eduPersonPrimaryAffiliation: Optional[str] = Field(default=None, title='EduPersonPrimaryAffiliation', description='Primary role at the organization: student or employee', example='student')
     eduPersonAffiliation: Optional[list[str]] = Field(default=None, title='EduPersonAffiliation', description='Roles at organization in Feide', example=["member", "student", "staff", "employee"])
     eduPersonEntitlement: Optional[list[str]] = Field(default=None, title='EduPersonEntitlement', description='Information about rights, roles and groups that this person has', example=["urn:mace:feide.no:sigma:confusa:admin", "urn:mace:feide.no:stillingskode:stat:1011", "http://example.org/contracts/HEd123"])
+
+
+class FeideOrg(BaseModel):
+    norEduOrgUniqueIdentifier: Optional[str] = Field(default=None, title='NorEduOrgUniqueIdentifier', description='The number assigned the higher educational institution by Universities and Colleges Admission Service ("Samordna opptak", SO).', example='00000185')
+    norEduOrgUnitUniqueIdentifier: Optional[str] = Field(default=None, title='NorEduOrgUnitUniqueIdentifier', description='The identifier describing an organizational unit.', example='332244')
 
 
 class Person(BaseModel):
@@ -49,7 +53,7 @@ class Person(BaseModel):
     preferredLanguage: Optional[str] = Field(default=None, title='Preferred language', description='The person\'s preferred language, defined by ISO 639-3 og BCP 47', example='nb')
     eduPersonOrcid: Optional[list[str]] = Field(default=None, title='ORCID iD', description='The person\'s ORCID iD. The iD is a 16-digit number, separated into four groups of four digits, with a hyphen between each group', example=['0000-0002-1825-0097'])
     eduPersonPrincipalNamePrior: Optional[list[str]] = Field(default=None, title='eduPersonPrincipalNamePrior', description='Each value of this multivalued attribute represents an ePPN (eduPersonPrincipalName) value that was previously associated with the entry. The values MUST NOT include the currently valid ePPN', example=["foo@hsww.wiz"])
-    feide: Optional[Feide] = Field(default=None, title='Feide', description='Feide attributes')
+    feide: Optional[FeidePerson] = Field(default=None, title='Feide', description='Feide attributes')
     extra: Optional[dict] = Field(default=None, title='Extra', description='Extra attributes')
 
 
@@ -62,7 +66,7 @@ class Org(BaseModel):
     telephoneNumber: Optional[list[str]] = Field(default=None, title='Telephone number', description='Telephone number as string', example=['+47 12345678'])
     mail: Optional[list[EmailStr]] = Field(default=None, title='Email', description='Email address as string', example=['kontakt@universitetet.no'])
     postalAddress: Optional[list[Address]] = None
-    feide: Optional[Feide] = Field(default=None, title='Feide', description='Feide attributes, can be used to link to Feide in the future.')
+    feide: Optional[FeideOrg] = Field(default=None, title='Feide', description='Feide attributes, can be used to link to Feide in the future.')
 
 
 app = FastAPI()
