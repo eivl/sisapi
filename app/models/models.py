@@ -195,7 +195,7 @@ class Person(BaseModel):
     orgRef: Optional[list[str]] = Field(
         default=None,
         title="Organization reference",
-        description="The organization the user belongs to",
+        description="The organization the user belongs to. Forign key to org table",
     )
     orgUnitPrimaryRef: Optional[str] = Field(
         default=None,
