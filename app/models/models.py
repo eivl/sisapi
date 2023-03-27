@@ -297,3 +297,8 @@ class Org(BaseModel):
         title="Feide",
         description="Feide attributes, can be used to link to Feide in the future.",
     )
+    extra: Optional[dict] = Field(
+        default=None,
+        title="Extra",
+        description="Extra attributes",
+    )
