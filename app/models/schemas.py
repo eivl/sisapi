@@ -100,7 +100,7 @@ class FeideOrg(BaseModel):
 
 
 class Person(BaseModel):
-    id: int
+    id: Optional[int] = Field(primary_key=True)
     is_active: bool
     org_id: int
 
@@ -141,9 +141,9 @@ class Person(BaseModel):
         default=None,
         title="Unique identifier number",
         description="""Shall be a unique identification number issued by 
-        Folkeregisteret or Utlendingsdirektoratet (UDI) or Samordna Opptak: 
-        - National identity number - D-number - DUF-number - S-number/So-number
-         (student-number issued by Samordna Opptak) or empty string""",
+                Folkeregisteret or Utlendingsdirektoratet (UDI) or Samordna Opptak: 
+                - National identity number - D-number - DUF-number - S-number/So-number
+                 (student-number issued by Samordna Opptak) or empty string""",
         example="28088933134",
     )
     dateOfBirth: Optional[str] = Field(
@@ -164,6 +164,13 @@ class Person(BaseModel):
         description="The person's email. Shall be a personal address",
         example=["ola.nordmann@universitetet.no", "olanor123@stud.universitetet.no"],
     )
+
+
+    class Config:
+        orm_mode = True
+
+class P:
+
     privateMail: Optional[list[EmailStr]] = Field(
         default=None,
         title="Private email",
@@ -221,23 +228,23 @@ class Person(BaseModel):
         default=None,
         title="Preferred language",
         description="The person's preferred language, "
-        "defined by ISO 639-3 og BCP 47",
+                    "defined by ISO 639-3 og BCP 47",
         example="nb",
     )
     eduPersonOrcid: Optional[list[str]] = Field(
         default=None,
         title="ORCID iD",
         description="The person's ORCID iD. The iD is a 16-digit number, "
-        "separated into four groups of four digits, "
-        "with a hyphen between each group",
+                    "separated into four groups of four digits, "
+                    "with a hyphen between each group",
         example=["0000-0002-1825-0097"],
     )
     eduPersonPrincipalNamePrior: Optional[list[str]] = Field(
         default=None,
         title="eduPersonPrincipalNamePrior",
         description="""Each value of this multivalued attribute represents an 
-        ePPN (eduPersonPrincipalName) value that was previously associated with
-         the entry. The values MUST NOT include the currently valid ePPN""",
+            ePPN (eduPersonPrincipalName) value that was previously associated with
+             the entry. The values MUST NOT include the currently valid ePPN""",
         example=["foo@hsww.wiz"],
     )
     feide: Optional[FeidePerson] = Field(
@@ -250,10 +257,6 @@ class Person(BaseModel):
         title="Extra",
         description="Extra attributes",
     )
-
-    class Config:
-        orm_mode = True
-
 
 class Org(BaseModel):
     id: int

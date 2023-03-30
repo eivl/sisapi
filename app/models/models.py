@@ -10,13 +10,18 @@ class Person(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     is_active = Column(Boolean, default=True)
-    org_id = Column(Integer, ForeignKey("orgs.id"))
+    org_id = Column(Integer, ForeignKey("orgs.id"), nullable=True)
 
     firstName = Column(String)
     lastName = Column(String)
     displayName = Column(String)
-    foreignId = Column(String)
-    userPrincipalName = Column(MutableList.as_mutable(ARRAY(String)))
+    foreignId = Column(String, unique=True, index=True)
+    userPrincipalName = Column(String)
+    username = Column(String)
+    uniqueIdentifierNumber = Column(String)
+    dateOfBirth = Column(DateTime)
+    localUniqueIdentifierNumber = Column(String)
+    mail = Column(MutableList.as_mutable(ARRAY(String)))
 
     org = relationship("Org", back_populates="person")
 
@@ -24,7 +29,7 @@ class Person(Base):
 class Org(Base):
     __tablename__ = "orgs"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     type = Column(String)
     foreignId = Column(String)
     legalOrgName = Column(MutableList.as_mutable(ARRAY(String)))

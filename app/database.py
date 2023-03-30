@@ -1,13 +1,32 @@
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+from dotenv import load_dotenv
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
-# SQLALCHEMY_DATABASE_URL = "mssql+pyodbc:///?odbc_connect=Driver%3D%7BODBC+Driver+17+for+SQL+Server%7D%3BServer%3Dlocalhost%2C1433%3BDatabase%3Dmaster%3BTrusted_Connection%3Dyes%3B"
+load_dotenv()
 
+
+class Settings:
+    PROJECT_NAME:str = "SIS API Database"
+    PROJECT_VERSION: str = "1.0.0"
+
+    POSTGRES_USER : str = os.getenv("POSTGRES_USER")
+    POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+    POSTGRES_SERVER : str = os.getenv("POSTGRES_SERVER","localhost")
+    POSTGRES_PORT : str = os.getenv("POSTGRES_PORT",5432) # default postgres port is 5432
+    POSTGRES_DB : str = os.getenv("POSTGRES_DB","tdd")
+    DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
+
+
+settings = Settings()
+
+# SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
+SQLALCHEMY_DATABASE_URL = settings.DATABASE_URL
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+    SQLALCHEMY_DATABASE_URL,
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
