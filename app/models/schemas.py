@@ -315,3 +315,11 @@ class Org(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class PersonCreate(Person):
+    pass
+
+
+class OrgCreate(Org):
+    pass

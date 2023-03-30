@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime, A
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.mutable import MutableList
 
-from ..database import Base
+from database import Base
 
 
 class Person(Base):
@@ -25,7 +25,7 @@ class Org(Base):
     __tablename__ = "orgs"
 
     id = Column(Integer, primary_key=True, index=True)
-    type = Column(ARRAY(String))
+    type = Column(String)
     foreignId = Column(String)
     legalOrgName = Column(MutableList.as_mutable(ARRAY(String)))
     orgNumber = Column(String)
